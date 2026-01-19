@@ -1,0 +1,20 @@
+{
+    "name": "UniSignal.Editor",
+    "rootNamespace": "UniSignal.Editor",
+    "references": [
+        "UniSignal.Runtime"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [
+        "UNITY_EDITOR"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
