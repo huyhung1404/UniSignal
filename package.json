@@ -1,0 +1,19 @@
+{
+  "name": "com.huyhung1404.unisignal",
+  "version": "0.0.1",
+  "displayName": "UniSignal",
+"description": "UniSignal is a zero-allocation, interface-based event system designed for Unity projects that require high performance, strong debugging, and long-term maintainability.",
+  "unity": "2019.1",
+  "dependencies": {
+  },
+  "keywords": [
+    "signal",
+    "event",
+    "uni"
+  ],
+  "author": {
+    "name": "huyhung1404",
+    "email": "huyhung1404@gmail.com",
+    "url": "https://github.com/huyhung1404"
+  }
+}
