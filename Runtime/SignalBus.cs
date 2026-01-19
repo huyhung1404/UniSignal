@@ -31,7 +31,6 @@ namespace UniSignal
             if (!listeners.TryGetValue(type, out var rawList)) return;
             var list = (List<ISignalListener<T>>)rawList;
             list.Remove(listener);
-            if (list.Count == 0) listeners.Remove(type);
         }
 
         public static void Dispatch<T>(T signal) where T : ISignalEvent => Dispatch(signal, signal.Scope);
@@ -60,6 +59,23 @@ namespace UniSignal
                     );
                 }
             }
+        }
+
+        public static void ReleaseEmptyLists()
+        {
+            if (listeners.Count == 0) return;
+            var temp = new List<Type>();
+            foreach (var kvp in listeners)
+            {
+                if (kvp.Value.Count == 0) temp.Add(kvp.Key);
+            }
+
+            for (var i = 0; i < temp.Count; i++) listeners.Remove(temp[i]);
+        }
+
+        public static void Clear()
+        {
+            listeners.Clear();
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace UniSignal
 {
@@ -43,5 +44,56 @@ namespace UniSignal
         }
 
         public override string ToString() => $"0x{Mask:X}";
+    }
+
+    public static class SignalScopeRegistry
+    {
+#if UNITY_EDITOR
+        internal static readonly Dictionary<ulong, string> scopeNames = new()
+        {
+            { ulong.MaxValue, "All" }
+        };
+#endif
+
+        public static void Register(string name, SignalScope scope)
+        {
+#if UNITY_EDITOR
+            if (string.IsNullOrEmpty(name))
+                return;
+
+            scopeNames[scope.Mask] = name;
+#endif
+        }
+
+#if UNITY_EDITOR
+        public static string GetName(SignalScope scope)
+        {
+            return scopeNames.TryGetValue(scope.Mask, out var name)
+                ? name
+                : $"0x{scope.Mask:X}";
+        }
+
+        public static IEnumerable<string> GetNames(SignalScope scope)
+        {
+            foreach (var kvp in scopeNames)
+            {
+                if (kvp.Key == ulong.MaxValue) continue;
+                if ((kvp.Key & scope.Mask) != 0) yield return kvp.Value;
+            }
+        }
+
+        public static string GetReadableScope(SignalScope scope)
+        {
+            if (scope.Mask == 0) return "None";
+            if (scope.Mask == ulong.MaxValue) return "All";
+
+            var names = GetNames(scope);
+            var result = string.Join(" | ", names);
+
+            return string.IsNullOrEmpty(result)
+                ? $"0x{scope.Mask:X}"
+                : result;
+        }
+#endif
     }
 }

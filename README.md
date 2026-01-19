@@ -108,6 +108,13 @@ public static class GameSignalScopes
     public static readonly SignalScope Gameplay = new(1UL << 0);
     public static readonly SignalScope UI       = new(1UL << 1);
     public static readonly SignalScope Network  = new(1UL << 2);
+    
+    static GameSignalScopes()
+    {
+        SignalScopeRegistry.Register("Gameplay", Gameplay);
+        SignalScopeRegistry.Register("UI", UI);
+        SignalScopeRegistry.Register("Network", Network);
+    }
 }
 ```
 
