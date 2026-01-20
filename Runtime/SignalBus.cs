@@ -7,7 +7,7 @@ namespace UniSignal
 {
     public static class SignalBus
     {
-        internal static readonly Dictionary<Type, IList> listeners = new();
+        internal static readonly Dictionary<Type, IList> listeners = new Dictionary<Type, IList>(16);
 
         public static void Register<T>(ISignalListener<T> listener) where T : ISignalEvent
         {
@@ -15,7 +15,7 @@ namespace UniSignal
 
             if (!listeners.TryGetValue(type, out var rawList))
             {
-                rawList = new List<ISignalListener<T>>();
+                rawList = new List<ISignalListener<T>>(16);
                 listeners[type] = rawList;
             }
 
@@ -64,7 +64,7 @@ namespace UniSignal
         public static void ReleaseEmptyLists()
         {
             if (listeners.Count == 0) return;
-            var temp = new List<Type>();
+            var temp = new List<Type>(16);
             foreach (var kvp in listeners)
             {
                 if (kvp.Value.Count == 0) temp.Add(kvp.Key);

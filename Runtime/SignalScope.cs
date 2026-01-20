@@ -49,7 +49,7 @@ namespace UniSignal
     public static class SignalScopeRegistry
     {
 #if UNITY_EDITOR
-        internal static readonly Dictionary<ulong, string> scopeNames = new()
+        internal static readonly Dictionary<ulong, string> scopeNames = new Dictionary<ulong, string>(8)
         {
             { ulong.MaxValue, "All" }
         };

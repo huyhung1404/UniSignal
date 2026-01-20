@@ -16,7 +16,7 @@ namespace UniSignal.Editor
         private string signalFilter = string.Empty;
         private string listenerFilter = string.Empty;
         private bool autoRefresh = true;
-        private readonly Dictionary<Type, bool> foldouts = new();
+        private readonly Dictionary<Type, bool> foldouts = new Dictionary<Type, bool>(64);
 
         [MenuItem("Window/UniSignal")]
         public static void Open()
