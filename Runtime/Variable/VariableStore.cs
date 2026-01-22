@@ -1,0 +1,67 @@
+using System.Collections.Generic;
+using UnityEngine;
+
+namespace UniSignal.Variable
+{
+    public sealed class VariableStore
+    {
+        private readonly Dictionary<string, object> vars;
+
+        public VariableStore()
+        {
+            vars = new Dictionary<string, object>(16);
+        }
+
+        public Variable<T> Define<T>(string key, T value, bool replace = false)
+        {
+            if (vars.TryGetValue(key, out var v))
+            {
+                var result = (Variable<T>)v;
+                if (replace)
+                {
+                    result.Set(value);
+                }
+                else
+                {
+                    Debug.LogWarning($"Variable [{key}] is already defined.");
+                }
+
+                return result;
+            }
+
+            var variable = new Variable<T>(key, value);
+            vars[key] = variable;
+            return variable;
+        }
+
+        public Variable<T> Define<T>(string key, Variable<T> value, bool replace = false)
+        {
+            if (vars.TryGetValue(key, out var v))
+            {
+                if (!replace)
+                {
+                    Debug.LogWarning($"Variable [{key}] is already defined.");
+                    return (Variable<T>)v;
+                }
+            }
+
+            vars[key] = value;
+            return value;
+        }
+
+        public void Undefine(string key)
+        {
+            vars.Remove(key);
+        }
+
+        public Variable<T> Get<T>(string key)
+        {
+            if (vars.TryGetValue(key, out var v))
+            {
+                return (Variable<T>)v;
+            }
+
+            return null;
+        }
+    }
+}

@@ -4,7 +4,21 @@ All notable changes to **UniSignal** will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
+## [1.1.0] - Variable System
+### Added
 
+#### UniVars (Global Variable System)
+
+- Introduced **UniVars**, a scoped global variable system designed for long-lived Unity projects
+- Added **Variable<T>** with:
+    - Type-safe access
+    - Zero-allocation runtime usage
+    - Implicit conversion from `UniVariable<T>` to `T`
+- Supported variable scopes:
+    - **Global** – persistent across the entire application lifetime
+- Added **VariableStore** as a scoped container with:
+    - Variable definition via `Define<T>(key, defaultValue)`
+    - Bulk reset support
 ---
 
 ## [1.0.0] - Initial Public Release
