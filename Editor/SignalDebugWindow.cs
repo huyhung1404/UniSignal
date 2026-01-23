@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
+using UniSignal.Variable;
 using UnityEditor;
 using UnityEngine;
 
@@ -15,7 +17,9 @@ namespace UniSignal.Editor
         private string scopeFilter = string.Empty;
         private string signalFilter = string.Empty;
         private string listenerFilter = string.Empty;
-        private bool autoRefresh = true;
+        private bool autoRefresh;
+        private bool drawHistory;
+        private bool drawVariable;
         private readonly Dictionary<Type, bool> foldouts = new Dictionary<Type, bool>(64);
 
         [MenuItem("Window/UniSignal")]
@@ -27,12 +31,16 @@ namespace UniSignal.Editor
         private void OnEnable()
         {
             autoRefresh = EditorPrefs.GetBool("UniSignal.AutoRefresh", true);
+            drawHistory = EditorPrefs.GetBool("UniSignal.DrawHistory", false);
+            drawVariable = EditorPrefs.GetBool("UniSignal.DrawVariable", false);
             EditorApplication.update += UpdateLoop;
         }
 
         private void OnDisable()
         {
             EditorPrefs.SetBool("UniSignal.AutoRefresh", autoRefresh);
+            EditorPrefs.SetBool("UniSignal.DrawHistory", drawHistory);
+            EditorPrefs.SetBool("UniSignal.DrawVariable", drawVariable);
             EditorApplication.update -= UpdateLoop;
         }
 
@@ -57,7 +65,8 @@ namespace UniSignal.Editor
 
             EditorGUILayout.EndScrollView();
 
-            DrawDispatchHistory();
+            if (drawVariable) DrawVariable();
+            if (drawHistory) DrawDispatchHistory();
         }
 
         private bool PassSignalFilter(Type signalType)
@@ -72,6 +81,8 @@ namespace UniSignal.Editor
             using (new EditorGUILayout.HorizontalScope(EditorStyles.toolbar))
             {
                 autoRefresh = GUILayout.Toggle(autoRefresh, "Auto Refresh", EditorStyles.toolbarButton);
+                drawVariable = GUILayout.Toggle(drawVariable, "Variable", EditorStyles.toolbarButton);
+                drawHistory = GUILayout.Toggle(drawHistory, "History", EditorStyles.toolbarButton);
                 GUILayout.FlexibleSpace();
                 if (GUILayout.Button("Release Empty Lists", EditorStyles.toolbarButton)) SignalBus.ReleaseEmptyLists();
                 if (GUILayout.Button("Clear All", EditorStyles.toolbarButton)) SignalBus.Clear();
@@ -249,13 +260,77 @@ namespace UniSignal.Editor
 
         private void DrawDispatchHistory()
         {
-            EditorGUILayout.Space();
+            EditorGUILayout.LabelField(GUIContent.none, GUI.skin.horizontalSlider);
             EditorGUILayout.LabelField("Dispatch History", EditorStyles.boldLabel);
 
             historyScroll = EditorGUILayout.BeginScrollView(historyScroll, GUILayout.Height(120));
             foreach (var record in SignalDispatchHistory.Records) EditorGUILayout.LabelField(record);
             EditorGUILayout.EndScrollView();
             if (GUILayout.Button("Clear History")) SignalDispatchHistory.Clear();
+        }
+
+        private void DrawVariable()
+        {
+            EditorGUILayout.LabelField(GUIContent.none, GUI.skin.horizontalSlider);
+            EditorGUILayout.LabelField("Variables", EditorStyles.boldLabel);
+            foreach (var (nameStore, store) in UniVars.AllStores)
+            {
+                DrawVariableStore(nameStore, store);
+            }
+        }
+
+        private void DrawVariableStore(string nameStore, VariableStore store)
+        {
+            EditorGUILayout.BeginVertical("box");
+            EditorGUILayout.LabelField(nameStore, EditorStyles.miniBoldLabel);
+            EditorGUI.indentLevel++;
+            foreach (var v in store.All) DrawVariable(v);
+            EditorGUI.indentLevel--;
+            EditorGUILayout.EndVertical();
+        }
+
+        private static void DrawVariable(object variable)
+        {
+            var type = variable.GetType();
+            var key = (string)type.GetField("key", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(variable);
+            var valueProp = type.GetField("value", BindingFlags.Instance | BindingFlags.NonPublic);
+
+            EditorGUILayout.BeginHorizontal();
+
+            EditorGUILayout.LabelField(key, GUILayout.Width(180));
+
+            var value = valueProp!.GetValue(variable);
+            var newValue = DrawInlineValue(
+                valueProp.FieldType,
+                value,
+                v => valueProp.SetValue(variable, v)
+            );
+
+            if (!Equals(value, newValue))
+            {
+                valueProp.SetValue(variable, newValue);
+            }
+
+            EditorGUILayout.EndHorizontal();
+        }
+
+        private static object DrawInlineValue(Type type, object value, Action<object> onApply)
+        {
+            var v = EditorExtensions.DrawDefaultValue(type, GUIContent.none, value);
+            if (v.Item1) return v.Item2;
+
+            EditorGUILayout.BeginHorizontal();
+
+            EditorGUILayout.LabelField(type.Name, GUILayout.MaxWidth(120));
+            GUILayout.FlexibleSpace();
+            if (GUILayout.Button("Edit", GUILayout.Width(40)))
+            {
+                ObjectEditPopup.Open($"Edit {type.Name}", value, onApply);
+            }
+
+            EditorGUILayout.EndHorizontal();
+
+            return value;
         }
 
         #endregion

@@ -10,6 +10,7 @@ namespace UniSignal.Editor
         private Type signalType;
         private object signalInstance;
         private SignalScope scope = SignalScope.All;
+        private int fieldCount;
 
         public static void Open(Type signalType)
         {
@@ -17,7 +18,55 @@ namespace UniSignal.Editor
             window.signalType = signalType;
             window.signalInstance = Activator.CreateInstance(signalType);
             window.titleContent = new GUIContent($"Send {signalType.Name}");
+            window.CalculateFieldCount();
+            window.FitSizeToContent();
             window.ShowUtility();
+        }
+
+        private void CalculateFieldCount()
+        {
+            const BindingFlags flags = BindingFlags.Instance | BindingFlags.Public;
+
+            fieldCount = 0;
+
+            foreach (var field in signalType.GetFields(flags))
+            {
+                if (!field.IsInitOnly)
+                    fieldCount++;
+            }
+
+            foreach (var prop in signalType.GetProperties(flags))
+            {
+                if (prop.CanWrite && prop.GetIndexParameters().Length == 0)
+                    fieldCount++;
+            }
+
+            fieldCount += 1;
+        }
+
+        private void FitSizeToContent()
+        {
+            var line = EditorGUIUtility.singleLineHeight;
+            const float spacing = 4f;
+            
+            var height = line * 1.5f + spacing * 4f;
+            
+            height += fieldCount * (line + spacing);
+            height += line * 2f;
+            
+            height += 12f;
+
+            const float width = 360f;
+            
+            if (fieldCount > 12)
+            {
+                minSize = new Vector2(width, 400);
+                maxSize = new Vector2(width, 600);
+            }
+            else
+            {
+                minSize = maxSize = new Vector2(width, height);
+            }
         }
 
         private void OnGUI()
@@ -68,21 +117,8 @@ namespace UniSignal.Editor
 
         private static object DrawValue(Type type, string label, object value)
         {
-            if (type == typeof(int))
-                return EditorGUILayout.IntField(label, (int)(value ?? 0));
-
-            if (type == typeof(float))
-                return EditorGUILayout.FloatField(label, (float)(value ?? 0f));
-
-            if (type == typeof(bool))
-                return EditorGUILayout.Toggle(label, (bool)(value ?? false));
-
-            if (type == typeof(string))
-                return EditorGUILayout.TextField(label, (string)value ?? string.Empty);
-
-            if (type == typeof(Vector3))
-                return EditorGUILayout.Vector3Field(label, value != null ? (Vector3)value : Vector3.zero);
-
+            var v = EditorExtensions.DrawDefaultValue(type, new GUIContent(label), value);
+            if (v.Item1) return v.Item2;
             EditorGUILayout.LabelField(label, $"(Unsupported: {type.Name})");
             return value;
         }

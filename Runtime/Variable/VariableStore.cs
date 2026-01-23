@@ -63,5 +63,7 @@ namespace UniSignal.Variable
 
             return null;
         }
+        
+        internal IEnumerable<object> All => vars.Values;
     }
 }

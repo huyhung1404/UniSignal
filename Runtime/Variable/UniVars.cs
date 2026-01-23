@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace UniSignal.Variable
 {
     public static class UniVars
@@ -7,6 +9,14 @@ namespace UniSignal.Variable
         static UniVars()
         {
             Global = new VariableStore();
+        }
+        
+        internal static IEnumerable<(string Name, VariableStore Store)> AllStores
+        {
+            get
+            {
+                yield return ("Global", Global);
+            }
         }
     }
 }
