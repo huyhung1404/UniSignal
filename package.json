@@ -1,8 +1,8 @@
 {
-  "name": "com.huyhung1404.unisignal",
-  "version": "1.1.0",
-  "displayName": "UniSignal",
-  "description": "UniSignal is a zero-allocation, interface-based event system designed for Unity projects that require high performance, strong debugging, and long-term maintainability.",
+  "name": "com.huyhung1404.unicore",
+  "version": "1.2.0",
+  "displayName": "UniCore",
+  "description": "UniCore is a lightweight architectural foundation for Unity, providing decoupled signals, scoped global variables, and powerful runtime debugging tools. It helps structure large projects with clear data flow, explicit state management, and zero-allocation runtime paths \u2014 without the overhead of a full framework.",
   "unity": "2019.1",
   "keywords": [
     "signal",
