@@ -2,13 +2,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
-using UniSignal.Variable;
+using UniCore.Signal;
+using UniCore.Vars;
 using UnityEditor;
 using UnityEngine;
 
-namespace UniSignal.Editor
+namespace UniCore.Editor
 {
-    public class SignalDebugWindow : EditorWindow
+    public class SignalAndVarsDebugWindow : EditorWindow
     {
         private Vector2 scroll;
         private Vector2 historyScroll;
@@ -22,10 +23,10 @@ namespace UniSignal.Editor
         private bool drawVariable;
         private readonly Dictionary<Type, bool> foldouts = new Dictionary<Type, bool>(64);
 
-        [MenuItem("Window/UniSignal")]
+        [MenuItem("UniCore/UniSignal & Vars Window")]
         public static void Open()
         {
-            GetWindow<SignalDebugWindow>("Signal");
+            GetWindow<SignalAndVarsDebugWindow>("Signal & Vars");
         }
 
         private void OnEnable()
@@ -273,7 +274,7 @@ namespace UniSignal.Editor
         {
             EditorGUILayout.LabelField(GUIContent.none, GUI.skin.horizontalSlider);
             EditorGUILayout.LabelField("Variables", EditorStyles.boldLabel);
-            foreach (var (nameStore, store) in UniVars.AllStores)
+            foreach (var (nameStore, store) in VarHub.AllStores)
             {
                 DrawVariableStore(nameStore, store);
             }

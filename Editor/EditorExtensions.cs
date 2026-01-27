@@ -2,7 +2,7 @@ using System;
 using UnityEditor;
 using UnityEngine;
 
-namespace UniSignal.Editor
+namespace UniCore.Editor
 {
     public static class EditorExtensions
     {

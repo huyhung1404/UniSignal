@@ -1,6 +1,7 @@
 using System.Collections.Generic;
+using UniCore.Signal;
 
-namespace UniSignal.Variable
+namespace UniCore.Vars
 {
     public class Variable<T>
     {

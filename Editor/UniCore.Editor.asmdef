@@ -1,8 +1,9 @@
 {
-    "name": "UniSignal.Editor",
-    "rootNamespace": "UniSignal.Editor",
+    "name": "UniCore.Editor",
+    "rootNamespace": "UniCore.Editor",
     "references": [
-        "UniSignal.Runtime"
+        "UniSignal",
+        "UniVars"
     ],
     "includePlatforms": [
         "Editor"

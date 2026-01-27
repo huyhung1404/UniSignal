@@ -3,7 +3,7 @@ using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
-namespace UniSignal.Editor
+namespace UniCore.Editor
 {
     public class ObjectEditPopup : EditorWindow
     {

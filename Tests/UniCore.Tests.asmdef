@@ -1,10 +1,11 @@
 {
-    "name": "UniSignal.Tests",
-    "rootNamespace": "UniSignal.Tests",
+    "name": "UniCore.Tests",
+    "rootNamespace": "UniCore.Tests",
     "references": [
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",
-        "UniSignal.Runtime"
+        "UniSignal",
+        "UniVars"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

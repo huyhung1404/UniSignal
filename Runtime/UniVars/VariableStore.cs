@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace UniSignal.Variable
+namespace UniCore.Vars
 {
     public sealed class VariableStore
     {

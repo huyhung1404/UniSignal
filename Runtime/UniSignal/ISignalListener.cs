@@ -1,4 +1,4 @@
-﻿namespace UniSignal
+﻿namespace UniCore.Signal
 {
     /// <summary>
     /// Represents a listener that can handle signals of a specific type.

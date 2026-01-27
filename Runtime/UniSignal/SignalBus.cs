@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace UniSignal
+namespace UniCore.Signal
 {
     public static class SignalBus
     {

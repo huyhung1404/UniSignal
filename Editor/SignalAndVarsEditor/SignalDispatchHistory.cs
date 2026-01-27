@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using UniCore.Signal;
 
-namespace UniSignal.Editor
+namespace UniCore.Editor
 {
     internal static class SignalDispatchHistory
     {

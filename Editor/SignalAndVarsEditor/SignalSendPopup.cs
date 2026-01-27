@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Reflection;
+using UniCore.Signal;
 using UnityEditor;
 using UnityEngine;
 
-namespace UniSignal.Editor
+namespace UniCore.Editor
 {
     public class SignalSendPopup : EditorWindow
     {

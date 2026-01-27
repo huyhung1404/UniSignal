@@ -1,12 +1,12 @@
 using System.Collections.Generic;
 
-namespace UniSignal.Variable
+namespace UniCore.Vars
 {
-    public static class UniVars
+    public static class VarHub
     {
         public static VariableStore Global { get; }
 
-        static UniVars()
+        static VarHub()
         {
             Global = new VariableStore();
         }

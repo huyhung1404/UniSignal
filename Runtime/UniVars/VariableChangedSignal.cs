@@ -1,4 +1,6 @@
-namespace UniSignal.Variable
+using UniCore.Signal;
+
+namespace UniCore.Vars
 {
     public class VariableChangedSignal<T> : ISignalEvent
     {

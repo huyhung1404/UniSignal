@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace UniSignal
+namespace UniCore.Signal
 {
     /// <summary>
     /// Represents a scope of signals identified by a unique mask for filtering

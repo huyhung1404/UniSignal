@@ -1,4 +1,4 @@
-namespace UniSignal
+namespace UniCore.Signal
 {
     /// <summary>
     /// Represents a signal event that can be dispatched and processed within the UniSignal system.

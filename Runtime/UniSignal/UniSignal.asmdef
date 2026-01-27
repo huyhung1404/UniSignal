@@ -1,6 +1,6 @@
 {
-    "name": "UniSignal.Runtime",
-    "rootNamespace": "UniSignal",
+    "name": "UniSignal",
+    "rootNamespace": "UniCore.Signal",
     "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],

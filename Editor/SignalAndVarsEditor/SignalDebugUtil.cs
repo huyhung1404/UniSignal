@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace UniSignal.Editor
+namespace UniCore.Editor
 {
     public static class SignalDebugUtil
     {
