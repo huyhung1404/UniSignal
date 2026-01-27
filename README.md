@@ -8,7 +8,7 @@ It helps structure large projects with clear data flow, explicit state managemen
 
 ## ✨ Features
 
-[![Badge](https://img.shields.io/badge/UniSignal-Readme-Color?logo=readme)](https://github.com/Cysharp/UniTask/blob/master/README_CN.md)
+[![Badge](https://img.shields.io/badge/UniSignal-Readme-Color?logo=readme)](https://github.com/huyhung1404/UniCore/blob/main/Runtime/UniSignal/README.md)
 
 ---
 
@@ -23,8 +23,8 @@ https://github.com/huyhung1404/UniCore.git
 Or add manually to `Packages/manifest.json`:
 
 ```json
-"com.huyhung1404.unisignal": {
-"git": "https://github.com/huyhung1404/UniCore.git"
+"com.huyhung1404.unicore": {
+    "git": "https://github.com/huyhung1404/UniCore.git"
 }
 ```
 
