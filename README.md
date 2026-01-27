@@ -40,8 +40,12 @@ It helps structure large projects with clear data flow, explicit state managemen
   Runtime signal and state recording system.
   [![Badge](https://img.shields.io/badge/Readme-Open-Color?logo=readme)](https://github.com/huyhung1404/UniCore/blob/main/Runtime/UniVars/README.md)
 
-* 💾 **UniSave**
-  Scoped persistence layer for structured game state.
+* 💾 **UniStorage**
+  Abstracted data storage layer for structured runtime and persistent data handling.
+  [![Badge](https://img.shields.io/badge/Readme-Open-Color?logo=readme)](https://github.com/huyhung1404/UniCore/blob/main/Runtime/UniVars/README.md)
+
+* 🏷 **UniAttribute**
+  Attribute-driven metadata system for declarative runtime and tooling behavior.
   [![Badge](https://img.shields.io/badge/Readme-Open-Color?logo=readme)](https://github.com/huyhung1404/UniCore/blob/main/Runtime/UniVars/README.md)
 
 ---
@@ -58,7 +62,7 @@ Or add manually to `Packages/manifest.json`:
 
 ```json
 "com.huyhung1404.unicore": {
-"git": "https://github.com/huyhung1404/UniCore.git"
+    "git": "https://github.com/huyhung1404/UniCore.git"
 }
 ```
 

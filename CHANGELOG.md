@@ -5,11 +5,26 @@ All notable changes to **UniCore** will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
-## [1.2.0] - Rename UniSignal to UniCore
-### About
-- UniCore is a lightweight architectural foundation for Unity, providing decoupled signals, scoped global variables, and powerful runtime debugging tools. It helps structure large projects with clear data flow, explicit state management, and zero-allocation runtime paths — without the overhead of a full framework.
+## [1.2.1] - Storage System & Attribute System
+
+### Added
+
+* Storage System
+* Attribute System
+
 ---
+
+## [1.2.0] - Rename UniSignal to UniCore
+
+### About
+
+- UniCore is a lightweight architectural foundation for Unity, providing decoupled signals, scoped global variables, and powerful runtime debugging tools. It helps structure
+  large projects with clear data flow, explicit state management, and zero-allocation runtime paths — without the overhead of a full framework.
+
+---
+
 ## [1.1.0] - Variable System
+
 ### Added
 
 #### UniVars (Global Variable System)
@@ -24,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - Added **VariableStore** as a scoped container with:
     - Variable definition via `Define<T>(key, defaultValue)`
     - Bulk reset support
+
 ---
 
 ## [1.0.0] - Initial Public Release

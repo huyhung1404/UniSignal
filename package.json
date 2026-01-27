@@ -1,6 +1,6 @@
 {
   "name": "com.huyhung1404.unicore",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "displayName": "UniCore",
   "description": "UniCore is a lightweight architectural foundation for Unity, providing decoupled signals, scoped global variables, and powerful runtime debugging tools. It helps structure large projects with clear data flow, explicit state management, and zero-allocation runtime paths \u2014 without the overhead of a full framework.",
   "unity": "2019.1",

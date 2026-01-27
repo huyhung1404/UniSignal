@@ -3,7 +3,9 @@
     "rootNamespace": "UniCore.Editor",
     "references": [
         "UniSignal",
-        "UniVars"
+        "UniVars",
+        "UniAttribute",
+        "UniStorage"
     ],
     "includePlatforms": [
         "Editor"
