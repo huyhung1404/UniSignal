@@ -21,7 +21,7 @@ namespace UniCore.Vars
             var old = value;
             value = v;
 
-            SignalBus.Dispatch(new VariableChangedSignal<T>
+            SignalSystem.Dispatch(new VariableChangedSignal<T>
             {
                 Key = key,
                 OldValue = old,

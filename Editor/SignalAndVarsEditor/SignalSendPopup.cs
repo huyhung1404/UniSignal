@@ -177,7 +177,7 @@ namespace UniCore.Editor
 
         private void Send()
         {
-            var method = typeof(SignalBus)
+            var method = typeof(SignalSystem)
                 .GetMethod("Dispatch", new[] { signalType, typeof(SignalScope) })
                 ?.MakeGenericMethod(signalType);
 

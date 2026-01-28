@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace UniCore.Signal
 {
-    public static class SignalBus
+    public static class SignalSystem
     {
         internal static readonly Dictionary<Type, IList> listeners = new Dictionary<Type, IList>(16);
 

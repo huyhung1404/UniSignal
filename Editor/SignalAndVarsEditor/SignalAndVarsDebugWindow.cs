@@ -58,7 +58,7 @@ namespace UniCore.Editor
             DrawToolbar();
 
             scroll = EditorGUILayout.BeginScrollView(scroll);
-            foreach (var kvp in SignalBus.listeners)
+            foreach (var kvp in SignalSystem.listeners)
             {
                 if (!PassSignalFilter(kvp.Key)) continue;
                 DrawSignalType(kvp.Key, kvp.Value);
@@ -85,8 +85,8 @@ namespace UniCore.Editor
                 drawVariable = GUILayout.Toggle(drawVariable, "Variable", EditorStyles.toolbarButton);
                 drawHistory = GUILayout.Toggle(drawHistory, "History", EditorStyles.toolbarButton);
                 GUILayout.FlexibleSpace();
-                if (GUILayout.Button("Release Empty Lists", EditorStyles.toolbarButton)) SignalBus.ReleaseEmptyLists();
-                if (GUILayout.Button("Clear All", EditorStyles.toolbarButton)) SignalBus.Clear();
+                if (GUILayout.Button("Release Empty Lists", EditorStyles.toolbarButton)) SignalSystem.ReleaseEmptyLists();
+                if (GUILayout.Button("Clear All", EditorStyles.toolbarButton)) SignalSystem.Clear();
             }
 
             using (new EditorGUILayout.HorizontalScope(EditorStyles.toolbar))
@@ -274,7 +274,7 @@ namespace UniCore.Editor
         {
             EditorGUILayout.LabelField(GUIContent.none, GUI.skin.horizontalSlider);
             EditorGUILayout.LabelField("Variables", EditorStyles.boldLabel);
-            foreach (var (nameStore, store) in VarHub.AllStores)
+            foreach (var (nameStore, store) in VarsSystem.AllStores)
             {
                 DrawVariableStore(nameStore, store);
             }
@@ -340,7 +340,7 @@ namespace UniCore.Editor
 
         private static void UnregisterListener(Type signalType, object listener)
         {
-            var method = typeof(SignalBus).GetMethod("Unregister")?.MakeGenericMethod(signalType);
+            var method = typeof(SignalSystem).GetMethod("Unregister")?.MakeGenericMethod(signalType);
             method?.Invoke(null, new[] { listener });
         }
 

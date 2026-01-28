@@ -49,19 +49,19 @@ namespace UniCore.Tests.Signal
             var gamePlayListener = new GamePlayListener();
             var uiListener = new UIListener();
 
-            SignalBus.Register(allListener);
-            SignalBus.Register(gamePlayListener);
-            SignalBus.Register(uiListener);
+            SignalSystem.Register(allListener);
+            SignalSystem.Register(gamePlayListener);
+            SignalSystem.Register(uiListener);
 
-            SignalBus.Dispatch(new TestSignal());
+            SignalSystem.Dispatch(new TestSignal());
 
             Assert.IsTrue(allListener.Received);
             Assert.IsTrue(gamePlayListener.Received);
             Assert.IsTrue(uiListener.Received);
 
-            SignalBus.Unregister(allListener);
-            SignalBus.Unregister(gamePlayListener);
-            SignalBus.Unregister(uiListener);
+            SignalSystem.Unregister(allListener);
+            SignalSystem.Unregister(gamePlayListener);
+            SignalSystem.Unregister(uiListener);
         }
 
         [Test]
@@ -71,19 +71,19 @@ namespace UniCore.Tests.Signal
             var gamePlayListener = new GamePlayListener();
             var uiListener = new UIListener();
 
-            SignalBus.Register(allListener);
-            SignalBus.Register(gamePlayListener);
-            SignalBus.Register(uiListener);
+            SignalSystem.Register(allListener);
+            SignalSystem.Register(gamePlayListener);
+            SignalSystem.Register(uiListener);
 
-            SignalBus.Dispatch(new TestSignal(), UniSignal_ScopeTests.Gameplay);
+            SignalSystem.Dispatch(new TestSignal(), UniSignal_ScopeTests.Gameplay);
 
             Assert.IsTrue(allListener.Received);
             Assert.IsTrue(gamePlayListener.Received);
             Assert.IsFalse(uiListener.Received);
 
-            SignalBus.Unregister(allListener);
-            SignalBus.Unregister(gamePlayListener);
-            SignalBus.Unregister(uiListener);
+            SignalSystem.Unregister(allListener);
+            SignalSystem.Unregister(gamePlayListener);
+            SignalSystem.Unregister(uiListener);
         }
 
         [Test]
@@ -94,16 +94,16 @@ namespace UniCore.Tests.Signal
             var low = new OrderedListener(0, order);
             var high = new OrderedListener(100, order);
 
-            SignalBus.Register(low);
-            SignalBus.Register(high);
+            SignalSystem.Register(low);
+            SignalSystem.Register(high);
 
-            SignalBus.Dispatch(new TestSignal());
+            SignalSystem.Dispatch(new TestSignal());
 
             Assert.AreEqual(100, order[0]);
             Assert.AreEqual(0, order[1]);
 
-            SignalBus.Unregister(low);
-            SignalBus.Unregister(high);
+            SignalSystem.Unregister(low);
+            SignalSystem.Unregister(high);
         }
 
         private class OrderedListener : ISignalListener<TestSignal>
@@ -128,13 +128,13 @@ namespace UniCore.Tests.Signal
         public void UniSignal_Dispatch_ShouldWorkWithMultipleScopes_Test()
         {
             var listener = new TestListener();
-            SignalBus.Register(listener);
+            SignalSystem.Register(listener);
 
-            SignalBus.Dispatch(new TestSignalMultiScope());
+            SignalSystem.Dispatch(new TestSignalMultiScope());
 
             Assert.IsTrue(listener.Received);
 
-            SignalBus.Unregister(listener);
+            SignalSystem.Unregister(listener);
         }
 
         private class TestListener : ISignalListener<TestSignalMultiScope>
@@ -160,16 +160,16 @@ namespace UniCore.Tests.Signal
             var a = new TestListener();
             var b = new TestListener();
 
-            SignalBus.Register(a);
-            SignalBus.Register(b);
+            SignalSystem.Register(a);
+            SignalSystem.Register(b);
 
-            SignalBus.Dispatch(new TestSignalMultiScope());
+            SignalSystem.Dispatch(new TestSignalMultiScope());
 
             Assert.IsTrue(a.Received);
             Assert.IsTrue(b.Received);
 
-            SignalBus.Unregister(a);
-            SignalBus.Unregister(b);
+            SignalSystem.Unregister(a);
+            SignalSystem.Unregister(b);
         }
 
         [Test]
@@ -178,18 +178,18 @@ namespace UniCore.Tests.Signal
             var good = new TestListener();
             var bad = new ExceptionListener();
 
-            SignalBus.Register(bad);
-            SignalBus.Register(good);
+            SignalSystem.Register(bad);
+            SignalSystem.Register(good);
             Assert.DoesNotThrow(() =>
             {
                 Debug.unityLogger.logEnabled = false;
-                SignalBus.Dispatch(new TestSignalMultiScope());
+                SignalSystem.Dispatch(new TestSignalMultiScope());
                 Debug.unityLogger.logEnabled = true;
             });
             Assert.IsTrue(good.Received);
 
-            SignalBus.Unregister(bad);
-            SignalBus.Unregister(good);
+            SignalSystem.Unregister(bad);
+            SignalSystem.Unregister(good);
         }
 
         private class ExceptionListener : ISignalListener<TestSignalMultiScope>

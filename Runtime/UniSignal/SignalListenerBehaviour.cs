@@ -6,12 +6,12 @@ namespace UniCore.Signal
     {
         protected virtual void OnEnable()
         {
-            SignalBus.Register(this);
+            SignalSystem.Register(this);
         }
 
         protected virtual void OnDisable()
         {
-            SignalBus.Unregister(this);
+            SignalSystem.Unregister(this);
         }
 
         public abstract void OnSignal(T signal);

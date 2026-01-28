@@ -2,11 +2,11 @@ using System.Collections.Generic;
 
 namespace UniCore.Vars
 {
-    public static class VarHub
+    public static class VarsSystem
     {
         public static VariableStore Global { get; }
 
-        static VarHub()
+        static VarsSystem()
         {
             Global = new VariableStore();
         }
