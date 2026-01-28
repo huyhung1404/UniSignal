@@ -1,19 +1,74 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections.Generic;
+using UnityEngine;
 
 namespace UniCore.Signal
 {
-    public abstract class SignalListenerBehaviour<T> : MonoBehaviour, ISignalListener<T> where T : ISignalEvent
+    public class SignalListenerBehaviour : MonoBehaviour
     {
-        protected virtual void OnEnable()
+        [SerializeField] private bool generateCache = true;
+
+        private static readonly Type listenerGenericType = typeof(ISignalListener<>);
+        private static Dictionary<Type, Type[]> typeCache;
+
+        public virtual void OnEnable() => Auto(true);
+        public virtual void OnDisable() => Auto(false);
+
+        private void Auto(bool register)
         {
-            SignalSystem.Register(this);
+            var monoType = GetType();
+
+            if (generateCache)
+            {
+                typeCache ??= new Dictionary<Type, Type[]>(8);
+                if (!typeCache.TryGetValue(monoType, out var signals))
+                {
+                    signals = BuildSignalArray(monoType);
+                    typeCache[monoType] = signals;
+                }
+
+                for (var i = 0; i < signals.Length; i++)
+                {
+                    if (register)
+                        SignalSystem.Register(signals[i], this);
+                    else
+                        SignalSystem.Unregister(signals[i], this);
+                }
+
+                return;
+            }
+
+            var interfaces = monoType.GetInterfaces();
+            for (var i = interfaces.Length - 1; i >= 0; i--)
+            {
+                var itf = interfaces[i];
+                if (!itf.IsGenericType) continue;
+                if (itf.GetGenericTypeDefinition() != listenerGenericType) continue;
+
+                var signalType = itf.GetGenericArguments()[0];
+
+                if (register)
+                    SignalSystem.Register(signalType, this);
+                else
+                    SignalSystem.Unregister(signalType, this);
+            }
         }
 
-        protected virtual void OnDisable()
+        private static Type[] BuildSignalArray(Type t)
         {
-            SignalSystem.Unregister(this);
-        }
+            var interfaces = t.GetInterfaces();
+            var list = new List<Type>(4);
 
-        public abstract void OnSignal(T signal);
+            for (var i = interfaces.Length - 1; i >= 0; i--)
+            {
+                var itf = interfaces[i];
+                if (!itf.IsGenericType) continue;
+                if (itf.GetGenericTypeDefinition() != listenerGenericType) continue;
+
+                list.Add(itf.GetGenericArguments()[0]);
+            }
+
+            return list.ToArray();
+        }
     }
 }

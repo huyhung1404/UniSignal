@@ -1,64 +1,51 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace UniCore.Signal
 {
     public static class SignalSystem
     {
-        internal static readonly Dictionary<Type, IList> listeners = new Dictionary<Type, IList>(16);
+        internal static readonly Dictionary<Type, IListenerList> listeners = new Dictionary<Type, IListenerList>(32);
 
         public static void Register<T>(ISignalListener<T> listener) where T : ISignalEvent
         {
             var type = typeof(T);
+            Register(type, listener);
+        }
 
-            if (!listeners.TryGetValue(type, out var rawList))
+        internal static void Register(Type signalType, object listener)
+        {
+            if (!listeners.TryGetValue(signalType, out var raw))
             {
-                rawList = new List<ISignalListener<T>>(16);
-                listeners[type] = rawList;
+                raw = CreateList(signalType);
+                listeners[signalType] = raw;
             }
 
-            var list = (List<ISignalListener<T>>)rawList;
-            if (list.Contains(listener)) return;
-            list.Add(listener);
-            list.Sort(static (a, b) => b.Priority.CompareTo(a.Priority));
+            raw.Add(listener);
+        }
+
+        private static IListenerList CreateList(Type t)
+        {
+            var listType = typeof(ListenerList<>).MakeGenericType(t);
+            return (IListenerList)Activator.CreateInstance(listType);
         }
 
         public static void Unregister<T>(ISignalListener<T> listener) where T : ISignalEvent
         {
             var type = typeof(T);
-            if (!listeners.TryGetValue(type, out var rawList)) return;
-            var list = (List<ISignalListener<T>>)rawList;
-            list.Remove(listener);
+            Unregister(type, listener);
+        }
+
+        internal static void Unregister(Type signalType, object listener)
+        {
+            if (listeners.TryGetValue(signalType, out var raw)) raw.Remove(listener);
         }
 
         public static void Dispatch<T>(T signal) where T : ISignalEvent => Dispatch(signal, signal.Scope);
 
         public static void Dispatch<T>(T signal, SignalScope scope) where T : ISignalEvent
         {
-            var type = typeof(T);
-
-            if (!listeners.TryGetValue(type, out var rawList)) return;
-
-            var list = (List<ISignalListener<T>>)rawList;
-            for (var i = 0; i < list.Count; i++)
-            {
-                var listener = list[i];
-                if (!listener.ListenScope.Intersects(scope)) continue;
-
-                try
-                {
-                    listener.OnSignal(signal);
-                }
-                catch (Exception ex)
-                {
-                    Debug.LogError(
-                        $"[UniSignal] Exception in {listener.GetType().Name} " +
-                        $"while handling {type.Name}\n{ex}"
-                    );
-                }
-            }
+            if (listeners.TryGetValue(typeof(T), out var raw)) ((ListenerList<T>)raw).Dispatch(signal, scope);
         }
 
         public static void ReleaseEmptyLists()

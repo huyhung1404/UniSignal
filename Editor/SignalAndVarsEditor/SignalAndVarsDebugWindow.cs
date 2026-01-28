@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using UniCore.Signal;
@@ -105,7 +104,7 @@ namespace UniCore.Editor
             }
         }
 
-        private void DrawSignalType(Type signalType, IList list)
+        private void DrawSignalType(Type signalType, IListenerList list)
         {
             foldouts.TryAdd(signalType, true);
 
@@ -126,8 +125,8 @@ namespace UniCore.Editor
                 EditorGUI.indentLevel++;
                 for (var i = 0; i < list.Count; i++)
                 {
-                    if (!PassFilter(list[i])) continue;
-                    DrawListener(signalType, list[i]);
+                    if (!PassFilter(list.Get(i))) continue;
+                    DrawListener(signalType, list.Get(i));
                 }
 
                 EditorGUI.indentLevel--;
