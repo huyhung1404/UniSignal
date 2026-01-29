@@ -22,7 +22,7 @@ namespace UniCore.Editor
         private bool drawVariable;
         private readonly Dictionary<Type, bool> foldouts = new Dictionary<Type, bool>(64);
 
-        [MenuItem("UniCore/UniSignal & Vars Window", priority = 0)]
+        [MenuItem("UniCore/Windows/Signal And Vars", priority = 0)]
         public static void Open()
         {
             GetWindow<SignalAndVarsDebugWindow>("Signal & Vars");

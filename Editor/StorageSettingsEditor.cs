@@ -24,7 +24,7 @@ namespace UniCore.Editor
         private SerializedProperty storageTypeProperty;
         private SerializedProperty storageCustomProperty;
 
-        [MenuItem("UniCore/Storage/Storage Settings", priority = 1)]
+        [MenuItem("UniCore/Settings/Storage", priority = 1)]
         public static void CreateStorageSettings()
         {
             var assetPath = $"Assets/Resources/{nameof(StorageSettings)}.asset";
