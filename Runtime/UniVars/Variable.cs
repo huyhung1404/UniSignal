@@ -29,6 +29,11 @@ namespace UniCore.Vars
             });
         }
 
+        public virtual T Get()
+        {
+            return value;
+        }
+
         public static implicit operator T(Variable<T> variable)
         {
             return variable.value;
